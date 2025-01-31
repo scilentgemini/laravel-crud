@@ -76,7 +76,7 @@
                             <td>{{ $post->title }}</td>
                             <td><img style="width:100px" src="{{ asset('uploads/images/'.$post->image) }}" alt=""/></td>
                             <td>{{ $post->body }}</td>
-                            <td>Edit</td>
+                            <td><a href="{{ route('post.edit',$post->id) }}">Edit</a></td>
                             <td>Delete</td>
                           </tr>
                           @endforeach
