@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class PostController extends Controller
 {
@@ -68,7 +69,31 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $data = $request->validate([
+            'title' => 'required|max:300|string',
+            'image' => 'sometimes|image|mimes:png,jpg,jpeg,webp|max:1024',
+            'body' => 'required|string|max:2000',
+        ]);
+
+        if($request->has('image'))
+        {
+            //checks for old image
+            $destination = 'uploads/images/'.$post->image;
+            //remove old file
+            if(File::exists($destination))
+            {
+                File::delete($destination);
+            }
+            //add new image
+            $imageName = time().'.'.$request->image->getClientOriginalExtension();
+            //move image to server
+            $request->image->move(public_path('uploads/images/'), $imageName);
+            //update image on server
+            $data['image'] = $imageName;
+        }
+        //updating data of specific id
+        $post->update($data);
+        return redirect()->route('post.create')->with('success', 'Post has been updated successfully.');
     }
 
     /**

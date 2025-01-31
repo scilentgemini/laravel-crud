@@ -16,7 +16,7 @@
                 <div class="col-md-5">
                     <div class="card p-3">
                         <h6>Edit {{ $post->title }}</h6>
-                        <form action="{{ route('post.update',$post->id) }}" method="post">
+                        <form action="{{ route('post.update',$post->id) }}" method="post" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="mb-3">
